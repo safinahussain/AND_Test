@@ -15,15 +15,15 @@
     <script src="js/app.js"></script>
     <script>
     
-    function search(){   	
-    	$.ajax({
-    		   url: "https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10",
-    		  type: "POST",
-    		  data: "query=10",
-    		  success:function(result){    $("div").text("done")  }
-    		});
-    		
-    	return false;
+    function alertDisplay(){
+    	alert("a");
+    }
+    
+    
+    function search(){  
+    	$.post("https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10&query=tea",
+               function(data){ alert(data);}
+    	);
     }
 
     </script>
@@ -32,12 +32,13 @@
 <!-- action = "https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10" -->
 <div class="container">
     <div class="box">
-    <form method="POST" onsubmit="search();">
+    <form method="POST" onSubmit="search()">
      <label>item : </label><input name = "query" id="query" >
+     <input type="submit" value="Search">
      </form>
     </div>
     <div id="output" name="output">
-    
+    &nbsp;
     </div>
  </div>
 
