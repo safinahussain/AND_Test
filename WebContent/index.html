@@ -17,8 +17,14 @@
     function itemizeVenues(venues){
     	var displayList = "";
     	for(i=0;i<venues.length;i++){
-    		displayList +=  "<br/><b>Name:</b>" + venues[i].name + "<br/>"+
-    	    "<b>Phone:</b>"+venues[i].contact.phone +"    <b>Formatted Phone:</b>"+venues[i].contact.formattedPhone;
+    		displayList +=  "<br/><b>Name:</b>" + venues[i].name;
+    		if(venues[i].contact.phone != undefined){
+    			displayList+= "<br/><b>Phone:</b>" + venues[i].contact.phone;
+    		}
+    		if(venues[i].contact.formattedPhone != undefined){
+    			displayList+= "<br/><b>Formatted Phone:</b>" + venues[i].contact.formattedPhone;
+    		}
+ 
     		displayList+= "<br/><b>Formatted Address:</b>"+ venues[i].location.formattedAddress.toString()+"<br/><br/><br/>";
     	}
     	return displayList;
@@ -46,6 +52,12 @@
     		
     		var xmlhttp;
     		var queryItem = document.getElementById("query").value;
+    		var limitItem = document.getElementById("limit").value;
+    		if(!queryItem || !limitItem){
+    			
+    			alert("Please enter both Item and Max Items");
+    			return;
+    		}
     		if (window.XMLHttpRequest)
     		  {// code for IE7+, Firefox, Chrome, Opera, Safari
     		  xmlhttp=new XMLHttpRequest();
@@ -63,11 +75,16 @@
     		      document.getElementById("output").innerHTML=itemizeVenues(myObject.response.venues);
     		    }
     		  }
-    		 xmlhttp.open("POST","https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10",true);
+    		 xmlhttp.open("POST","https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825",true);
     		/* xmlhttp.open("POST","http://localhost:8080/AND_Test/test.html",true); */
     		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    		xmlhttp.send("query="+queryItem);
+    		xmlhttp.send("query="+queryItem+"&limit="+limitItem);
+    		/* if(window.event.stopPropagation)
+    			window.event.stopPropagation();
+    		else 
+    			window.event.cancelBubble = true; */
     		
+    		return false;
     }
     </script>
     
@@ -75,9 +92,10 @@
 <!-- action = "https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10" -->
 <div class="container">
     <div class="box">
-    <form onsubmit="search();return false;">
-     <label>item : </label><input name = "query" id="query" >
-     <input type="button" value="Search" onclick="search()" >
+    <form onsubmit="return search();">
+     <b>Item</b><input name = "query" id="query" value="tea">
+     <b>Max number</b><input name="limit" id="limit" value="10">
+     <input type="submit" value="Search" onclick="search()" >
      </form>
     </div>
     <div id="output" name="output" style = "display:block;">
