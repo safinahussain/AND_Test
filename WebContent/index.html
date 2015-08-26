@@ -14,6 +14,16 @@
     <script src="js/jquery.js"></script>
     <script src="js/app.js"></script>
     <script>
+    function itemizeVenues(venues){
+    	var displayList = "";
+    	for(i=0;i<venues.length;i++){
+    		displayList +=  "<br/><b>Name:</b>" + venues[i].name + "<br/>"+
+    	    "<b>Phone:</b>"+venues[i].contact.phone +"    <b>Formatted Phone:</b>"+venues[i].contact.formattedPhone;
+    		displayList+= "<br/><b>Formatted Address:</b>"+ venues[i].location.formattedAddress.toString()+"<br/><br/><br/>";
+    	}
+    	return displayList;
+    }
+    
     function search(){  
     	/* $.post("https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10&query=tea",
     			[], function(data){ alert(data)}
@@ -35,6 +45,7 @@
     		
     		
     		var xmlhttp;
+    		var queryItem = document.getElementById("query").value;
     		if (window.XMLHttpRequest)
     		  {// code for IE7+, Firefox, Chrome, Opera, Safari
     		  xmlhttp=new XMLHttpRequest();
@@ -49,13 +60,13 @@
     		  if (xmlhttp.readyState==4 && xmlhttp.status == 200)
     		    {
     			 var myObject = JSON.parse(xmlhttp.responseText);
-    		    document.getElementById("output").innerHTML=xmlhttp.responseText;
+    		      document.getElementById("output").innerHTML=itemizeVenues(myObject.response.venues);
     		    }
     		  }
     		 xmlhttp.open("POST","https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10",true);
     		/* xmlhttp.open("POST","http://localhost:8080/AND_Test/test.html",true); */
     		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    		xmlhttp.send("query=tea");
+    		xmlhttp.send("query="+queryItem);
     		
     }
     </script>
@@ -64,9 +75,9 @@
 <!-- action = "https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10" -->
 <div class="container">
     <div class="box">
-    <form>
+    <form onsubmit="search();return false;">
      <label>item : </label><input name = "query" id="query" >
-     <input type="button" value="Search" onclick="search()">
+     <input type="button" value="Search" onclick="search()" >
      </form>
     </div>
     <div id="output" name="output" style = "display:block;">
