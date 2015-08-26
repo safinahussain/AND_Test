@@ -20,7 +20,7 @@
     	); */
     	
     	
-    	$.ajax({
+    	/*$.ajax({
     		  type:    "POST",
     		  url:     "https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10&query=tea",
     		  success: function(data) {
@@ -28,10 +28,35 @@
     		  },
     		  error:   function(jqXHR, textStatus, errorThrown) {
     		        alert("Error, status = " + textStatus + ", " +
-    		              "error thrown: " + errorThrown
+    		              "error thrown: " + jqXHR.responseText
     		        );
     		  }
-    		});
+    		});*/
+    		
+    		
+    		var xmlhttp;
+    		if (window.XMLHttpRequest)
+    		  {// code for IE7+, Firefox, Chrome, Opera, Safari
+    		  xmlhttp=new XMLHttpRequest();
+    		  }
+    		else
+    		  {// code for IE6, IE5
+    		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    		  }
+    		xmlhttp.onreadystatechange=function()
+    		  {
+  
+    		  if (xmlhttp.readyState==4 && xmlhttp.status == 200)
+    		    {
+    			 var myObject = JSON.parse(xmlhttp.responseText);
+    		    document.getElementById("output").innerHTML=xmlhttp.responseText;
+    		    }
+    		  }
+    		 xmlhttp.open("POST","https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10",true);
+    		/* xmlhttp.open("POST","http://localhost:8080/AND_Test/test.html",true); */
+    		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    		xmlhttp.send("query=tea");
+    		
     }
     </script>
     
@@ -39,12 +64,12 @@
 <!-- action = "https://api.foursquare.com/v2/venues/search?ll=51.52,00.03&client_id=ANNWWLGLZ1TZYWX1KZQTZSKIYDFW2ZS30LOL20CBA4JM0RBP&client_secret=MSL014OPY1RLI4P2K35ZYMOFPO3GPKBLPFOF44KJFG2UBTGE&v=20150825&limit=10" -->
 <div class="container">
     <div class="box">
-    <form method="POST" onSubmit="search()">
+    <form>
      <label>item : </label><input name = "query" id="query" >
-     <input type="submit" value="Search">
+     <input type="button" value="Search" onclick="search()">
      </form>
     </div>
-    <div id="output" name="output">
+    <div id="output" name="output" style = "display:block;">
     &nbsp;
     </div>
  </div>
